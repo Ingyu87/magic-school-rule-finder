@@ -1,0 +1,224 @@
+/* CSS Variables for theming */
+:root {
+    --primary-color: #a855f7;
+    --primary-gradient-start: #c471ed;
+    --primary-gradient-end: #f64f59;
+    --shadow-color: #f64f59;
+}
+
+body.theme-spell {
+    --primary-color: #a855f7;
+    --primary-gradient-start: #c471ed;
+    --primary-gradient-end: #f64f59;
+    --shadow-color: #f64f59;
+}
+
+body.theme-drawing {
+    --primary-color: #3b82f6;
+    --primary-gradient-start: #60a5fa;
+    --primary-gradient-end: #3b82f6;
+    --shadow-color: #60a5fa;
+}
+
+body.theme-potion {
+    --primary-color: #22c55e;
+    --primary-gradient-start: #4ade80;
+    --primary-gradient-end: #22c55e;
+    --shadow-color: #4ade80;
+}
+
+body {
+    font-family: 'Gowun Dodum', sans-serif;
+    background-color: #0c0a1a;
+    color: #f0f0f0;
+    background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"%3E%3Cg fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.05"%3E%3Cpath opacity=".5" d="M96 95h4v1h-4v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9zm-1 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9z"/%3E%3Cpath d="M6 5V0h1v5h5v1H6v5H5V6H0V5h5z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');
+}
+
+.magic-font {
+    font-family: 'Poor Story', cursive;
+    text-shadow: 0 0 5px var(--primary-color), 0 0 10px var(--primary-color), 0 0 15px var(--shadow-color);
+}
+
+.magic-card {
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+}
+
+.magic-card.cursor-pointer:hover {
+    transform: translateY(-10px) scale(1.05);
+    box-shadow: 0 0 20px var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.magic-button {
+    transition: all 0.3s ease;
+    font-family: 'Nanum Pen Script', cursive;
+    font-size: 1.5rem;
+    border: 2px solid var(--primary-color);
+    background: linear-gradient(45deg, var(--primary-gradient-start), var(--primary-gradient-end));
+}
+
+.magic-button:hover:not(:disabled) {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px var(--shadow-color);
+}
+
+.magic-button:disabled {
+    background: #4a4a5e;
+    border-color: #333;
+    cursor: not-allowed;
+}
+
+.gender-button {
+    border: 2px solid var(--primary-color);
+    transition: all 0.2s;
+}
+
+.gender-button.selected {
+    background-color: var(--primary-color);
+    box-shadow: 0 0 10px var(--primary-color);
+    color: #0c0a1a;
+    font-weight: bold;
+}
+
+.input-magic {
+     border-color: var(--primary-color);
+}
+
+.input-magic:focus {
+     --tw-ring-color: var(--primary-color);
+}
+
+/* Stardust animation */
+.stardust-animation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 100;
+}
+
+.star {
+    position: absolute;
+    background-color: white;
+    border-radius: 50%;
+    animation: fall linear forwards;
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(100vh);
+        opacity: 0;
+    }
+}
+
+.correct-answer {
+    background-color: rgba(74, 222, 128, 0.2);
+    border-left: 4px solid #4ade80;
+}
+
+.wrong-answer {
+    background-color: rgba(248, 113, 113, 0.2);
+    border-left: 4px solid #f87171;
+}
+
+/* PDF-specific styles */
+.pdf-export-mode #results-content {
+    font-size: 10px;
+    padding: 10px;
+}
+.pdf-export-mode #results-title {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+.pdf-export-mode #evaluation-section {
+    padding: 10px;
+    margin-bottom: 12px;
+}
+.pdf-export-mode #final-character-container {
+     width: 100px;
+     height: 150px;
+}
+.pdf-export-mode #evaluation-level {
+    font-size: 18px;
+}
+ .pdf-export-mode #evaluation-text {
+    font-size: 11px;
+}
+.pdf-export-mode #results-summary {
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+.pdf-export-mode .wrong-answer, .pdf-export-mode .correct-answer {
+    padding: 8px;
+}
+.pdf-export-mode .text-xl {
+    font-size: 12px;
+}
+.pdf-export-mode summary {
+    font-size: 11px;
+}
+#final-character-container.can-download {
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+}
+#final-character-container.can-download:hover {
+    transform: scale(1.05);
+}
+
+/* Answer selection styles */
+.correct-selection {
+    background: linear-gradient(45deg, #10B981, #34D399) !important;
+    border-color: #10B981 !important;
+    color: white !important;
+}
+
+.wrong-selection {
+    background: linear-gradient(45deg, #EF4444, #F87171) !important;
+    border-color: #EF4444 !important;
+    color: white !important;
+}
+
+/* Drawing game specific styles */
+.drawing-option {
+    background: rgba(0, 0, 0, 0.2);
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.drawing-option:hover {
+    border-color: var(--primary-color);
+    background: rgba(0, 0, 0, 0.4);
+}
+
+/* Loading states */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+/* Error states */
+.error-message {
+    color: #ef4444;
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid #ef4444;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin: 1rem 0;
+}
+
+/* Success states */
+.success-message {
+    color: #10b981;
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid #10b981;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin: 1rem 0;
+}
+

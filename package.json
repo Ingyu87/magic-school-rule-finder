@@ -1,0 +1,30 @@
+{
+  "name": "magic-school-rule-finder",
+  "version": "1.0.0",
+  "description": "마법 학교 - 규칙찾기와 식만들기 교육 게임",
+  "main": "index.html",
+  "scripts": {
+    "dev": "python -m http.server 8000",
+    "build": "echo 'Static site - no build needed'",
+    "start": "python -m http.server 8000"
+  },
+  "keywords": [
+    "education",
+    "math",
+    "game",
+    "korean",
+    "elementary",
+    "pattern-recognition"
+  ],
+  "author": "Magic School Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/magic-school-rule-finder.git"
+  },
+  "homepage": "https://magic-school-rule-finder.vercel.app",
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
+

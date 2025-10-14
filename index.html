@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>마법 학교 - 규칙찾기와 식만들기</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- jsPDF and html2canvas for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <!-- Google Fonts for magical theme -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Nanum+Pen+Script&family=Poor+Story&display=swap" rel="stylesheet">
+    <!-- Link to external CSS file -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+
+    <!-- Stardust Animation Container -->
+    <div id="stardust-container" class="stardust-animation hidden"></div>
+
+    <!-- Loading Spinner -->
+    <div id="loading-spinner" class="hidden fixed inset-0 bg-black bg-opacity-70 flex-col items-center justify-center z-50">
+        <div class="animate-spin rounded-full h-20 w-20 border-t-4 border-b-4 border-purple-500"></div>
+        <p id="loading-text" class="text-xl mt-4 magic-font text-white">마법 문항을 만들고 있어요...</p>
+    </div>
+
+    <!-- Similar Question Modal -->
+    <div id="similar-question-modal" class="hidden fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 p-4">
+        <div id="modal-content" class="magic-card p-8 rounded-2xl w-full max-w-2xl relative">
+            <button id="close-modal-button" class="absolute top-4 right-4 text-3xl font-bold">&times;</button>
+            <h3 class="text-2xl magic-font mb-4">유사 문제 풀어보기</h3>
+            <div id="similar-question-container"></div>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <main class="w-full max-w-6xl mx-auto">
+
+        <!-- 1. Landing Screen -->
+        <section id="landing-screen" class="text-center">
+            <h1 class="text-5xl md:text-7xl font-bold magic-font mb-8">마법 학교</h1>
+            <h2 class="text-3xl md:text-5xl font-bold magic-font mb-12">- 규칙찾기와 식만들기 -</h2>
+            <div class="max-w-md mx-auto">
+                 <div class="mb-6">
+                    <label class="block text-xl mb-4">마법사 성별을 선택하세요</label>
+                    <div class="flex justify-center gap-4">
+                        <button id="gender-female" class="gender-button w-full py-3 rounded-lg text-xl">여학생</button>
+                        <button id="gender-male" class="gender-button w-full py-3 rounded-lg text-xl">남학생</button>
+                    </div>
+                </div>
+                <div>
+                    <label for="nickname-input" class="block text-xl mb-4">마법사 닉네임을 입력하세요</label>
+                    <input type="text" id="nickname-input" class="w-full bg-transparent border-2 rounded-lg py-3 px-4 text-center text-2xl focus:outline-none focus:ring-2 input-magic" placeholder="예) 꼬마 마법사">
+                </div>
+                <button id="start-button" disabled class="w-full mt-6 py-3 px-6 rounded-lg text-white font-bold magic-button">
+                    마법 학교 입장하기
+                </button>
+            </div>
+        </section>
+
+        <!-- 2. Class Selection Screen -->
+        <section id="selection-screen" class="hidden text-center">
+            <h2 class="text-4xl md:text-5xl font-bold magic-font mb-2">마법 수업을 선택하세요</h2>
+            <p id="welcome-message" class="text-xl mb-10">환영합니다, 마법사님!</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Card 1: Spell -->
+                <div id="class-spell" class="magic-card p-6 rounded-2xl cursor-pointer">
+                    <img src="https://ifh.cc/g/F5bhPV.png" alt="마법 주문" class="w-full h-40 object-cover rounded-lg mb-4">
+                    <h3 class="text-2xl font-bold">마법 주문 완성하기</h3>
+                    <p class="text-gray-300 mt-2">다양한 숫자 규칙을 찾아 주문을 완성해요.</p>
+                </div>
+                <!-- Card 2: Drawing -->
+                <div id="class-drawing" class="magic-card p-6 rounded-2xl cursor-pointer">
+                    <img src="https://ifh.cc/g/PjCn36.png" alt="마법진" class="w-full h-40 object-cover rounded-lg mb-4">
+                    <h3 class="text-2xl font-bold">마법진 그리기</h3>
+                    <p class="text-gray-300 mt-2">다양한 모양 규칙을 발견해 마법진을 그려요.</p>
+                </div>
+                <!-- Card 3: Potion -->
+                <div id="class-potion" class="magic-card p-6 rounded-2xl cursor-pointer">
+                    <img src="https://ifh.cc/g/VGy4j5.png" alt="마법 물약" class="w-full h-40 object-cover rounded-lg mb-4">
+                    <h3 class="text-2xl font-bold">균형의 물약 만들기</h3>
+                    <p class="text-gray-300 mt-2">저울의 균형을 맞추며 계산 규칙을 배워요.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Class Activity Screen -->
+        <section id="activity-screen" class="hidden">
+             <div class="flex flex-col md:flex-row gap-8 w-full max-w-6xl mx-auto items-stretch">
+                <!-- Character Display -->
+                <div class="w-full md:w-1/3 p-6 rounded-2xl magic-card flex flex-col items-center justify-center">
+                    <h3 id="character-title" class="text-2xl magic-font mb-4"></h3>
+                     <div id="character-container-activity" class="relative w-48 h-72 bg-black bg-opacity-20 rounded-lg flex items-center justify-center">
+                        <img id="character-img-activity" class="w-full h-full object-contain" src="" alt="마법사 캐릭터">
+                    </div>
+                </div>
+                <!-- Problem Area -->
+                <div class="w-full md:w-2/3 p-8 rounded-2xl magic-card flex flex-col">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 id="activity-title" class="text-3xl font-bold magic-font"></h2>
+                        <p id="progress-text" class="text-xl font-bold">1/5</p>
+                    </div>
+                    <div id="problem-text-container" class="text-center text-xl md:text-2xl leading-relaxed mb-4 min-h-[50px]"></div>
+                    <div id="problem-visual-container" class="flex justify-center items-center gap-2 my-auto min-h-[100px] flex-wrap"></div>
+                    <div id="options-container" class="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-8 justify-items-center"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Results Screen -->
+        <section id="results-screen" class="hidden">
+            <div id="results-content" class="w-full max-w-4xl mx-auto p-6 md:p-10 rounded-2xl magic-card">
+                <h2 id="results-title" class="text-4xl font-bold magic-font text-center mb-6">결과 보고서</h2>
+
+                <!-- Evaluation Section -->
+                <div id="evaluation-section" class="text-center mb-8 p-6 bg-black bg-opacity-20 border-2 border-dashed border-yellow-300 rounded-lg">
+                    <div class="flex flex-col md:flex-row items-center justify-center gap-6">
+                        <div id="final-character-container" class="relative w-32 h-48 md:w-40 md:h-60 flex-shrink-0 bg-black bg-opacity-20 rounded-lg flex items-center justify-center">
+                             <img id="character-img-result" class="w-full h-full object-contain rounded-lg" src="" alt="최종 마법사 캐릭터">
+                             <div id="character-loader-result" class="hidden absolute inset-0 bg-black bg-opacity-50 flex-col items-center justify-center rounded-lg">
+                                <div class="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-purple-400"></div>
+                                <p class="text-sm mt-2 text-white">분석 중...</p>
+                            </div>
+                        </div>
+                        <div class="text-left">
+                            <p id="evaluation-level" class="text-3xl font-bold text-yellow-300 magic-font mb-2"></p>
+                            <div id="evaluation-text-container" class="text-lg">
+                                <p id="evaluation-text">AI 선생님이 학습 결과를 분석하고 있어요...</p>
+                                <div id="feedback-loader" class="mt-2 w-full h-4 bg-gray-700 rounded-full overflow-hidden">
+                                    <div class="h-full bg-purple-500 animate-pulse" style="width: 40%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <p id="results-summary" class="text-2xl text-center mb-10"></p>
+                <div id="results-details" class="space-y-6">
+                    <!-- Detailed results will be rendered here -->
+                </div>
+            </div>
+            <div class="text-center mt-8 flex flex-col md:flex-row justify-center gap-4">
+                <button id="retry-button" class="py-3 px-6 rounded-lg text-white font-bold magic-button">
+                    다시 풀어보기
+                </button>
+                <button id="pdf-button" class="py-3 px-6 rounded-lg text-white font-bold magic-button">
+                    결과지 PDF로 저장하기
+                </button>
+            </div>
+        </section>
+
+    </main>
+    
+    <!-- Link to external JS file which now contains the question bank -->
+    <script src="script.js" type="module"></script>
+</body>
+</html>
+
