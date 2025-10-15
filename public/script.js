@@ -312,7 +312,7 @@ async function generateBaseCharacterImage() {
         
         const payload = {
             contents: [{ parts: [{ text: userPrompt }] }],
-            generationConfig: { responseModalities: ['IMAGE'] },
+            generationConfig: {},
         };
         const result = await callGenerativeApi('gemini-1.5-flash:generateContent', payload);
         baseCharacterData = result?.candidates?.[0]?.content?.parts?.find(p => p.inlineData)?.inlineData?.data;
@@ -374,7 +374,7 @@ async function generateFinalCharacterImage(finalScore) {
                     { inlineData: { mimeType: "image/png", data: baseCharacterData } }
                 ]
             }],
-            generationConfig: { responseModalities: ['IMAGE'] },
+            generationConfig: {},
         };
         
         const result = await callGenerativeApi('gemini-1.5-flash:generateContent', payload);
