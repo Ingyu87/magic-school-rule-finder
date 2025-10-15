@@ -274,7 +274,7 @@ async function callGenerativeApi(endpoint, payload) {
             : "API 키가 설정되지 않았습니다.\n\nAPI 키 발급 방법:\n1. https://aistudio.google.com/app/apikey 방문\n2. 'Create API Key' 클릭\n3. 발급받은 키를 script.js 파일의 GEMINI_API_KEY 변수에 입력";
         throw new Error(errorMessage);
     }
-    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${endpoint}?key=${GEMINI_API_KEY}`;
+    const apiUrl = `https://generativelanguage.googleapis.com/v1/models/${endpoint}?key=${GEMINI_API_KEY}`;
      const response = await fetchWithRetry(apiUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
