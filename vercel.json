@@ -1,1 +1,16 @@
-{}
+{
+  "version": 2,
+  "name": "magic-school-rule-finder",
+  "builds": [
+    {
+      "src": "index.html",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ]
+}
