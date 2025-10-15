@@ -1,6 +1,7 @@
 {
   "version": 2,
   "name": "magic-school-rule-finder",
+  "buildCommand": "npm run build",
   "outputDirectory": "public",
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }

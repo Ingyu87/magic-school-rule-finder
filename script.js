@@ -2,7 +2,7 @@
 // 중요: 아래 "" 안에 Google AI Studio에서 발급받은 API 키를 넣어주세요.
 // API 키를 발급받으려면: https://aistudio.google.com/app/apikey
 // Vercel 배포 시: Vercel 대시보드 > Settings > Environment Variables에서 GEMINI_API_KEY 설정
-const GEMINI_API_KEY = (typeof process !== 'undefined' && process.env && process.env.GEMINI_API_KEY) ? process.env.GEMINI_API_KEY : "";
+const GEMINI_API_KEY = "__GEMINI_API_KEY_PLACEHOLDER__";
 
 // API 키가 설정되었는지 확인하는 함수
 function checkApiKey() {
