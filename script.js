@@ -314,7 +314,7 @@ async function generateBaseCharacterImage() {
             contents: [{ parts: [{ text: userPrompt }] }],
             generationConfig: { responseModalities: ['IMAGE'] },
         };
-        const result = await callGenerativeApi('gemini-1.5-flash-latest:generateContent', payload);
+        const result = await callGenerativeApi('gemini-pro:generateContent', payload);
         baseCharacterData = result?.candidates?.[0]?.content?.parts?.find(p => p.inlineData)?.inlineData?.data;
 
         if (!baseCharacterData) throw new Error('API 응답에서 이미지 데이터를 찾을 수 없습니다.');
@@ -377,7 +377,7 @@ async function generateFinalCharacterImage(finalScore) {
             generationConfig: { responseModalities: ['IMAGE'] },
         };
         
-        const result = await callGenerativeApi('gemini-1.5-flash-latest:generateContent', payload);
+        const result = await callGenerativeApi('gemini-pro:generateContent', payload);
         const finalImageData = result?.candidates?.[0]?.content?.parts?.find(p => p.inlineData)?.inlineData?.data;
         if (!finalImageData) throw new Error('API 응답에서 최종 이미지 데이터를 찾을 수 없습니다.');
 
@@ -443,7 +443,7 @@ async function getPersonalizedFeedback(finalScore) {
             }
         };
 
-        const result = await callGenerativeApi('gemini-1.5-flash-latest:generateContent', payload);
+        const result = await callGenerativeApi('gemini-pro:generateContent', payload);
         const jsonText = result.candidates[0].content.parts[0].text;
         return JSON.parse(jsonText);
     } catch (error) {
