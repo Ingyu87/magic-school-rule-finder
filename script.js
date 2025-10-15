@@ -2,12 +2,12 @@
 // 중요: 아래 "" 안에 Google AI Studio에서 발급받은 API 키를 넣어주세요.
 // API 키를 발급받으려면: https://aistudio.google.com/app/apikey
 // Vercel 배포 시: Vercel 대시보드 > Settings > Environment Variables에서 GEMINI_API_KEY 설정
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY || "AIzaSyBdEXu-rQGnMnC4jllugGxL5huMQ81Q7PY";
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY || "";
 
 // API 키가 설정되었는지 확인하는 함수
 function checkApiKey() {
     if (!GEMINI_API_KEY || GEMINI_API_KEY.trim() === "") {
-        return false;
+         return false;
     }
     return true;
 }
@@ -247,10 +247,10 @@ async function fetchWithRetry(url, options, retries = 3, delay = 1000) {
             const response = await fetch(url, options);
             if (!response.ok) {
                 if (response.status === 429 || response.status >= 500) {
-                    throw new Error(`API Error with status ${response.status}, retrying...`);
+                   throw new Error(`API Error with status ${response.status}, retrying...`);
                 }
                 // Do not retry on other client-side errors (like 400 Bad Request)
-                return response;
+                return response; 
             }
             return response;
         } catch (error) {
@@ -275,7 +275,7 @@ async function callGenerativeApi(endpoint, payload) {
         throw new Error(errorMessage);
     }
     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${endpoint}?key=${GEMINI_API_KEY}`;
-    const response = await fetchWithRetry(apiUrl, {
+     const response = await fetchWithRetry(apiUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
@@ -294,7 +294,7 @@ async function generateBaseCharacterImage() {
     try {
         const genderText = characterGender === 'female' ? 'girl' : 'boy';
         let userPrompt = '';
-
+        
         switch (currentGameType) {
             case 'spell':
                 characterTitle.textContent = "나의 마법사";
@@ -309,7 +309,7 @@ async function generateBaseCharacterImage() {
                 userPrompt = `A cute, simple apprentice alchemist ${genderText} character, wearing a simple, plain, drab brown apron over simple clothes. Full body, simple cartoon style, clean white background, facing forward.`;
                 break;
         }
-
+        
         const payload = {
             contents: [{ parts: [{ text: userPrompt }] }],
             generationConfig: { responseModalities: ['IMAGE'] },
@@ -322,7 +322,7 @@ async function generateBaseCharacterImage() {
         characterImgActivity.src = imageUrl;
     } catch (error) {
         console.error("기본 캐릭터 생성 실패:", error);
-        characterImgActivity.src = 'https://placehold.co/192x288/0c0a1a/f0f0f0?text=Error';
+         characterImgActivity.src = 'https://placehold.co/192x288/0c0a1a/f0f0f0?text=Error';
         
         // 사용자에게 더 친화적인 오류 메시지 표시
         if (error.message.includes("API 키")) {
@@ -376,7 +376,7 @@ async function generateFinalCharacterImage(finalScore) {
             }],
             generationConfig: { responseModalities: ['IMAGE'] },
         };
-
+        
         const result = await callGenerativeApi('gemini-1.5-flash-latest:generateContent', payload);
         const finalImageData = result?.candidates?.[0]?.content?.parts?.find(p => p.inlineData)?.inlineData?.data;
         if (!finalImageData) throw new Error('API 응답에서 최종 이미지 데이터를 찾을 수 없습니다.');
@@ -395,51 +395,51 @@ async function generateFinalCharacterImage(finalScore) {
 async function getPersonalizedFeedback(finalScore) {
     try {
         const incorrectProblems = questions.map((q, i) => ({ ...q, userAnswer: userAnswers[i] })).filter((q, i) => {
-            if (currentGameType === 'drawing') {
-                return userAnswers[i] && JSON.stringify(userAnswers[i]) !== JSON.stringify(q.answer);
-            }
+         if (currentGameType === 'drawing') {
+             return userAnswers[i] && JSON.stringify(userAnswers[i]) !== JSON.stringify(q.answer);
+         }
             return userAnswers[i] !== q.answer;
-        });
-
-        let promptContent;
-        const baseInstruction = `
+     });
+     
+     let promptContent;
+     const baseInstruction = `
             You are a kind and encouraging elementary school teacher in Korea.
             A 4th-grade student named '${nickname}' has just finished a 5-question quiz.
-            The student's final score is ${finalScore} out of 5.
+        The student's final score is ${finalScore} out of 5.
             Based on the student's score and the specific problems they got wrong (if any), please provide personalized feedback.
             Your feedback must be in Korean.
-            Your feedback should include:
+        Your feedback should include:
             1. A title for the feedback using the format: '레벨 (칭호)'. For example: '상 (최고 마법사)', '중 (우수 마법사)', '하 (견습 마법사)'.
             2. A summary of their performance, addressing them by their nickname.
             3. An analysis of the types of mistakes they made (if any), explained simply.
             4. Specific, actionable advice on what to review or practice next.
             Please respond in a valid JSON format with two keys: "level" (string) and "feedback" (string).
-        `;
+     `;
 
-        if (incorrectProblems.length === 0) {
-            promptContent = `
+     if (incorrectProblems.length === 0) {
+         promptContent = `
                 The student got a perfect score of 5 out of 5.
-                Please provide a congratulatory message with the title '상 (최고 마법사)'.
-                ${baseInstruction}
-            `;
-        } else {
+            Please provide a congratulatory message with the title '상 (최고 마법사)'.
+            ${baseInstruction}
+         `;
+     } else {
             const problemType = {
                 spell: "숫자 배열에서 규칙 찾기",
                 drawing: "도형과 그림에서 규칙 찾기",
                 potion: "양팔 저울을 이용해 식 만들기"
             }[currentGameType];
-            promptContent = `
+         promptContent = `
                 The quiz was about '${problemType}'.
-                Here are the problems the student got wrong:
+            Here are the problems the student got wrong:
                 ${JSON.stringify(incorrectProblems.map(({ problem, userAnswer, answer, explanation }) => ({ problem, userAnswer, answer, explanation })), null, 2)}
-                ${baseInstruction}
-            `;
-        }
+            ${baseInstruction}
+         `;
+     }
 
-        const payload = {
-            contents: [{ parts: [{ text: promptContent }] }],
-            generationConfig: {
-                responseMimeType: "application/json",
+     const payload = {
+        contents: [{ parts: [{ text: promptContent }] }],
+        generationConfig: {
+            responseMimeType: "application/json",
             }
         };
 
@@ -465,7 +465,7 @@ function getQuestionsForGame() {
         const typeQuestions = questionBank[currentGameType][typeKey];
         const pool = typeQuestions.filter(q => q.difficulty === difficulty);
         
-        const usedIds = gameQuestions.map(q => q.id);
+            const usedIds = gameQuestions.map(q => q.id);
         let availablePool = pool.filter(q => !usedIds.includes(q.id));
 
         if (availablePool.length === 0) {
@@ -473,8 +473,8 @@ function getQuestionsForGame() {
         }
         
         if (availablePool.length > 0) {
-            const randomIndex = Math.floor(Math.random() * availablePool.length);
-            gameQuestions.push(availablePool[randomIndex]);
+                const randomIndex = Math.floor(Math.random() * availablePool.length);
+                gameQuestions.push(availablePool[randomIndex]);
         }
     });
 
@@ -549,7 +549,7 @@ function createShapeElement(shapeData, sizeClass = 'w-16 h-16') {
                 content += `<div class="w-8 h-8">${createSingleShape(s)}</div>`;
             });
             content += `</div>`;
-        }
+         }
     } else { // Single object
         content = createSingleShape(shapeData);
     }
@@ -560,7 +560,7 @@ function createShapeElement(shapeData, sizeClass = 'w-16 h-16') {
 function createScaleElement(leftItems, rightItems) {
     const scaleContainer = document.createElement('div');
     scaleContainer.className = 'w-full flex flex-col items-center';
-
+    
     const createSide = (items) => {
         let content = '';
         items.forEach(item => {
@@ -568,7 +568,7 @@ function createScaleElement(leftItems, rightItems) {
         });
         return `<div class="w-32 h-24 border-2 border-yellow-300 bg-black bg-opacity-30 rounded-lg flex flex-wrap items-center justify-center gap-2 p-2">${content}</div>`;
     };
-
+    
     scaleContainer.innerHTML = `
         <div class="flex items-center justify-center gap-4">
             ${createSide(leftItems)}
@@ -594,10 +594,10 @@ async function startGame(gameType) {
     currentGameType = gameType;
     applyTheme(gameType);
     navigateTo('activity');
-
+    
     const titles = { spell: '마법 주문 완성하기', drawing: '마법진 그리기', potion: '균형의 물약 만들기' };
     activityTitle.textContent = titles[gameType];
-
+    
     await resetGame();
 
     questions = getQuestionsForGame();
@@ -658,8 +658,8 @@ function renderQuestion() {
     if (currentGameType === 'spell' || currentGameType === 'potion') {
         if (q.left && q.right) {
             problemVisualContainer.appendChild(createScaleElement(q.left, q.right));
-        }
-        shuffledOptions.forEach(optionText => {
+         }
+         shuffledOptions.forEach(optionText => {
             const button = document.createElement('button');
             button.className = 'magic-button w-full py-3 px-4 text-xl';
             button.textContent = optionText;
@@ -670,10 +670,10 @@ function renderQuestion() {
         const patternContainer = document.createElement('div');
         patternContainer.className = 'flex justify-center items-center gap-2 flex-wrap';
         if (q.pattern) {
-            q.pattern.forEach(patternPart => {
+             q.pattern.forEach(patternPart => {
                 patternContainer.appendChild(createShapeElement(patternPart, 'w-12 h-12'));
-            });
-        }
+             });
+         }
         patternContainer.innerHTML += `<div class="w-12 h-12 flex items-center justify-center text-4xl magic-font">?</div>`;
         problemVisualContainer.appendChild(patternContainer);
 
@@ -703,7 +703,7 @@ function handleOptionSelect(selectedAnswer, selectedButton) {
     if (isCorrect) {
         score++;
         selectedButton.classList.add('correct-selection');
-    } else {
+        } else {
         selectedButton.classList.add('wrong-selection');
     }
 
@@ -717,16 +717,16 @@ function handleOptionSelect(selectedAnswer, selectedButton) {
 async function showResults() {
     playStardustAnimation();
     navigateTo('results');
-
+    
     resultsTitle.textContent = `${nickname} 마법사의 결과 보고서`;
     resultsSummary.textContent = `총 ${questions.length}문제 중 ${score}문제 정답!`;
-
+    
     characterLoaderResult.classList.remove('hidden');
     characterLoaderResult.classList.add('flex');
     feedbackLoader.style.display = 'block';
     evaluationText.textContent = 'AI 선생님이 학습 결과를 분석하고 있어요...';
     evaluationLevel.textContent = '분석 중...';
-    
+
     const [_, feedbackResult] = await Promise.all([
         generateFinalCharacterImage(score),
         getPersonalizedFeedback(score)
@@ -738,7 +738,7 @@ async function showResults() {
 
     evaluationLevel.textContent = feedbackResult.level;
     evaluationText.innerHTML = feedbackResult.feedback.replace(/\n/g, '<br>');
-
+    
     renderResultDetails();
 }
 
@@ -757,7 +757,7 @@ function renderResultDetails() {
         detailElement.className = `p-4 rounded-lg ${isCorrect ? 'correct-answer' : 'wrong-answer'}`;
         
         let problemDisplay = `<p class="mb-3 text-xl">${(q.problem || "").replace(/\n/g, '<br>')}</p>`;
-        if (q.left && q.right) {
+            if (q.left && q.right) {
             problemDisplay += `<div class="flex justify-center my-2">${createScaleElement(q.left, q.right).innerHTML}</div>`;
         } else if (currentGameType === 'drawing' && q.pattern) {
             const patternDiv = document.createElement('div');
@@ -768,9 +768,9 @@ function renderResultDetails() {
 
         const userAnswerDisplay = displayAnswer(userAnswer, currentGameType);
         const correctAnswerDisplay = displayAnswer(q.answer, currentGameType);
-
+        
         const similarButton = isCorrect ? '' : `<button data-question-id="${q.id}" class="similar-question-button mt-2 text-sm text-yellow-400 underline">유사 문제 풀어보기</button>`;
-
+        
         detailElement.innerHTML = `
             <p class="font-bold text-lg mb-2">📜 ${index + 1}번 문제</p>
             ${problemDisplay}
@@ -918,56 +918,56 @@ function validateStart() {
 
 // --- EVENT LISTENERS ---
 function initializeEventListeners() {
-    nicknameInput.addEventListener('input', validateStart);
+nicknameInput.addEventListener('input', validateStart);
 
-    genderFemaleButton.addEventListener('click', () => {
-        characterGender = 'female';
-        genderFemaleButton.classList.add('selected');
-        genderMaleButton.classList.remove('selected');
-        validateStart();
-    });
+genderFemaleButton.addEventListener('click', () => {
+    characterGender = 'female';
+    genderFemaleButton.classList.add('selected');
+    genderMaleButton.classList.remove('selected');
+    validateStart();
+});
 
-    genderMaleButton.addEventListener('click', () => {
-        characterGender = 'male';
-        genderMaleButton.classList.add('selected');
-        genderFemaleButton.classList.remove('selected');
-        validateStart();
-    });
+genderMaleButton.addEventListener('click', () => {
+    characterGender = 'male';
+    genderMaleButton.classList.add('selected');
+    genderFemaleButton.classList.remove('selected');
+    validateStart();
+});
 
-    startButton.addEventListener('click', () => {
-        nickname = nicknameInput.value.trim();
-        if (!startButton.disabled) {
-            playStardustAnimation();
-            welcomeMessage.textContent = `환영합니다, ${nickname} 마법사님!`;
-            navigateTo('selection');
-        }
-    });
-
-    nicknameInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' && !startButton.disabled) {
-            startButton.click();
-        }
-    });
-
-    classSpellCard.addEventListener('click', () => startGame('spell'));
-    classDrawingCard.addEventListener('click', () => startGame('drawing'));
-    classPotionCard.addEventListener('click', () => startGame('potion'));
-
-    retryButton.addEventListener('click', () => {
+startButton.addEventListener('click', () => {
+    nickname = nicknameInput.value.trim();
+    if (!startButton.disabled) {
         playStardustAnimation();
+        welcomeMessage.textContent = `환영합니다, ${nickname} 마법사님!`;
         navigateTo('selection');
-    });
+    }
+});
 
-    pdfButton.addEventListener('click', generatePDF);
-    finalCharacterContainer.addEventListener('click', downloadCharacterImage);
-    closeModalButton.addEventListener('click', () => {
-        similarQuestionModal.classList.add('hidden');
-    });
+nicknameInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !startButton.disabled) {
+        startButton.click();
+    }
+});
+
+classSpellCard.addEventListener('click', () => startGame('spell'));
+classDrawingCard.addEventListener('click', () => startGame('drawing'));
+classPotionCard.addEventListener('click', () => startGame('potion'));
+
+retryButton.addEventListener('click', () => {
+    playStardustAnimation();
+    navigateTo('selection');
+});
+
+pdfButton.addEventListener('click', generatePDF);
+finalCharacterContainer.addEventListener('click', downloadCharacterImage);
+closeModalButton.addEventListener('click', () => {
+    similarQuestionModal.classList.add('hidden');
+});
 }
 
 // --- INITIALIZATION ---
 document.addEventListener('DOMContentLoaded', () => {
-    navigateTo('landing');
+navigateTo('landing');
     applyTheme('spell'); // Default theme
     initializeEventListeners();
 });
